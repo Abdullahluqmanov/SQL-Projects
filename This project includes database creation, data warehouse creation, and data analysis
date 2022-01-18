@@ -1,0 +1,604 @@
+USE northwind;
+
+SELECT 20+50 + 30 AS Addition, 20*100 AS Multiplication, 10/2 AS Division, 5 mod 2 AS Modulus;
+
+SELECT * FROM products;
+
+SELECT CONCAT(FirstName, ' ', LastName) AS FullName, CONCAT('$', format(Salary, 2)) 
+FROM employees
+ORDER BY Salary DESC;
+
+SELECT * FROM orders 
+ORDER BY CustomerID 
+LIMIT 10;
+
+SELECT CONCAT(FirstName, '', LastName) AS FullName, Salary 
+FROM employees
+ORDER BY Salary
+DESC
+LIMIT 1;
+
+# WHERE clause is just like a filter, it only filtering the result that we want
+
+
+SELECT * FROM customers;
+SELECT 'This is the list of the UK Customer', Country, ContactName, CompanyName
+FROM customers
+WHERE Country = 'UK'; 
+
+SELECT * FROM employees
+WHERE Title = 'Sales Representative';
+
+/*WHERE Clause can use any filed within a table to perform the filtering activities*/
+
+SELECT Country, ContactName, Phone
+ FROM customers
+ WHERE Country != 'Spain';
+ 
+ SELECT ProductName, UnitsInStock 
+ FROM products
+ WHERE UnitsInStock <10
+ ORDER BY UnitsInStock ASC;
+ 
+SELECT * FROM customers
+WHERE country = 'France' AND (City = 'Paris' OR  'Nantes');
+
+SELECT * FROM products;
+
+SELECT ProductName, CONCAT('$', UnitPrice) AS UnitPrice
+FROM products
+WHERE UnitPrice BETWEEN 31 AND 70
+ORDER BY UnitPrice DESC;
+
+SELECT * FROM employees
+WHERE ReportsTo = 2 AND (Salary <= 3000) -- AND Region IS NOT NULL
+ORDER BY Salary ASC
+;
+
+SELECT * FROM Customers
+WHERE Country NOT IN ('UK', 'Germany', 'France');
+
+CREATE DATABASE people;
+USE people;
+
+CREATE TABLE person(
+PersonID int, 
+LastName varchar(50),
+FirstName varchar(50), 
+Address varchar(255),
+City varchar(255),
+INDEX (LastName, FirstName)
+);
+
+SELECT * FROM person;
+describe person;
+
+CREATE INDEX city_index ON Person(city);
+CREATE INDEX Address_index ON Person(Address);
+
+USE northwind;
+
+SHOW INDEX FROM orders;
+
+USE people;
+
+CREATE TABLE party(
+PartyID int NOT NULL AUTO_INCREMENT,
+PartyName varchar(255),
+PartyFlagColor enum('red', 'yellow', 'green') NOT NULL,
+PartyLeader Varchar(255),
+Primary KEY(PartyID)
+);
+
+CREATE INDEX Party_Name_Index ON party(PartyName);
+
+CREATE INDEX Flag_index ON party(PartyFlagColor);
+
+CREATE INDEX Leader_Index ON party(PartyLeader);
+
+CREATE DATABASE test;
+USE test;
+
+USE people;
+
+DROP DATABASE test; 
+
+USE northwind;
+EXPLAIN SELECT * FROM products;
+
+
+SHOW INDEX FROM party;
+
+ALTER TABLE party
+DROP INDEX Party_Name_Index; 
+
+USE northwind;
+
+WHERE customerID LIKE '%T'; 
+
+SELECT * FROM orders
+WHERE customerID LIKE '%OR';
+
+ USE northwind;
+ 
+SELECT Country, HomePhone FROM employees
+WHERE (Country = 'USA' OR Country = 'UK') AND (HomePhone LIKE '%44%');
+
+ SELECT Country, HomePhone FROM employees
+WHERE Country IN ('USA', 'UK') AND (HomePhone LIKE '%44%' OR Extension LIKE '%44%');
+
+SELECT * FROM employees;
+
+SELECT * FROM customers
+WHERE ContactTitle NOT LIKE '%Representative%representative%';
+
+USE carshop;
+
+show tables;
+
+SELECT * FROM cars
+WHERE CarID = 8;
+
+UPDATE cars
+SET Price = 20000
+WHERE carID = 6; 
+
+UPDATE cars
+SET Price = 10900
+WHERE CarID = 3;
+
+UPDATE cars
+SET price = 20000,
+carName = 'HONDA_CRV'
+WHERE carID = 7;
+
+UPDATE cars
+SET CarName = 'MINI',
+Price = 50000
+WHERE CarID = 8;
+
+SELECT * FROM manufacturers;
+
+show tables;
+
+SELECT database();
+
+USE northwind;
+
+SELECT * FROM employees;
+
+SELECT EmployeeID, PhotoPath FROM employees
+WHERE EmployeeID = 6;
+
+UPDATE employees
+SET PhotoPath = REPLACE(PhotoPath, 'webacc', 'accweb');
+
+UPDATE employees
+SET PhotoPath = REPLACE(PhotoPath, 'accweb', 'webacc')
+WHERE EmployeeID = 6;
+
+UPDATE employees
+SET PhotoPath = REPLACE(PhotoPath, 'webacc', 'accweb')
+WHERE employeeID = 6;
+
+SELECT DISTINCT Country FROM customers 
+
+ORDER BY Country DESC;
+
+SELECT ENGINE;
+
+SELECT DISTINCT ShipRegion FROM orders 
+WHERE ShipRegion IS NOT NULL
+ORDER BY ShipRegion
+;
+
+USE northwind;
+
+SELECT * FROM Products;
+
+SELECT UnitPrice AS OldUnitPrice, FORMAT(UnitPrice, 2) AS NewUnitPrice FROM Products; # The aggregation fuction from the SELECT fucnction will NOT change the values of the database
+
+SELECT * FROM products;
+
+use northwind;
+
+SELECT * FROM employees;
+
+SELECT Title, MIN(Salary), MAX(Salary), AVG(Salary), SUM(Salary)
+FROM employees
+GROUP BY Title;
+
+SELECT CustomerID, MIN(Freight), MAX(Freight), AVG(Freight) 
+FROM orders
+GROUP BY CustomerID;
+
+SELECT * FROM employees;
+
+SELECT Title, CONCAT('$',' ', FORMAT(MIN(Salary), 2)), CONCAT('$', '', FORMAT(MAX(Salary),2)), CONCAT('$', ' ', FORMAT(AVG(Salary),2)), CONCAT('$', FORMAT(SUM(Salary),2))
+FROM employees
+GROUP BY Title;
+
+SELECT ShipRegion, COUNT(shipRegion)
+ FROM orders
+ GROUP BY ShipRegion
+ ORDER BY COUNT(shipRegion) DESC;
+
+
+SELECT * FROM orderdetails;
+
+SELECT ProductID, COUNT(*)
+FROM orderdetails
+GROUP BY ProductID
+ORDER BY COUNT(*) DESC;
+
+SELECT ProductID, SUM(Quantity)
+FROM orderdetails
+GROUP BY ProductID
+ORDER BY SUM(Quantity) DESC;
+
+SELECT EmployeeID, COUNT(OrderID)
+ FROM orders
+ GROUP BY(EmployeeID)
+ ORDER BY COUNT(OrderID) DESC
+ LIMIT 1 ;
+ 
+ CREATE DATABASE IF NOT EXISTS JOINS;
+USE JOINS;
+
+
+CREATE TABLE TableA
+    (A1 int);
+    
+INSERT INTO TableA
+    (A1)
+VALUES
+    (3),
+    (1),
+    (1),
+    (2),
+    (5),
+    (1)
+;
+
+
+CREATE TABLE TableB
+    (B1 int)
+;
+    
+INSERT INTO TableB
+    (B1)
+VALUES
+    (4),
+    (3),
+    (3),
+    (1),
+    (2),
+	 (null);
+
+USE joins;
+
+show tables;
+
+ SELECT * FROM tableb;
+ 
+ 
+
+ 
+ USE northwind;
+ 
+ SELECT ShipperID FROM shippers;
+ 
+ SELECT ShipVia FROM orders; 
+
+SELECT CompanyName AS ShipperName, OrderID 
+FROM shippers INNERE JOIN orders
+ON ShipVia = ShipperID; 
+
+USE joins;
+
+show tables;
+
+SELECT * FROM tablea
+INNER JOIN 
+tableb
+ON A1 = B1;
+
+USE northwind;
+
+SELECT * FROM orders; 
+
+SELECT ShipperID, ShipVia 
+FROM shippers
+LEFT JOIN orders 
+ON ShipperID = ShipVia;
+
+USE joins;
+  
+  
+-- SELECT a.A1, b.B1 
+-- FROM tablea AS a
+-- LEFT JOIN tableb AS b
+-- ON a.A1 = b.B1;
+
+SELECT A1, B1 FROM TableA
+INNER JOIN Tableb 
+WHERE A1 = B1;
+
+SELECT a1, B1 FROM Tablea
+INNER JOIN tableb 
+ON A1 = B1
+WHERE A1 = 1;
+
+USE carshop;
+
+show tables;
+
+SELECT * FROM manufacturers;
+
+SELECT * FROM CARS;
+
+SELECT cars.CarName, manufacturers.manufacturerName
+FROM cars LEFT JOIN manufacturers
+USING(manufacturerID);  # IF the 'Common column' is the same in BOTH tables, we can use this
+
+USE Northwind;
+
+SELECT * FROM products; 
+SELECT * FROM Suppliers;
+
+SELECT CompanyName AS SupplierName, COUNT(ProductName)
+FROM products LEFT JOIN suppliers
+USING(SupplierID)
+GROUP BY SupplierName
+ORDER BY COUNT(ProductName) DESC
+LIMIT 3;
+
+USE northwind;
+
+SHOW TABLES;
+
+SELECT * FROM orders;
+SELECT * FROM employees;
+
+SELECT  e.EmployeeID, COUNT(CONCAT(e.FirstName,' ', e.LastName)), o.orderID, o.orderDate
+FROM orders AS o LEFT JOIN
+employees AS e
+USING(EmployeeID)
+GROUP BY e.EmployeeID
+ORDER BY COUNT(CONCAT(e.FirstName,' ', e.LastName)) DESC;
+
+SELECT * FROM products;
+SELECT * FROM suppliers;
+
+SELECT s.CompanyName, COUNT(s.CompanyName) AS 'Number of products supplied', p.ProductName, p.productID, s.SupplierID
+FROM products AS p
+INNER JOIN
+suppliers AS s
+USING(SupplierID)
+GROUP BY s.CompanyName;
+
+
+
+SELECT customers.CompanyName, orders.CustomerID, orders.ShipVia 
+FROM orders LEFT JOIN customers
+USING(CustomerID);
+
+SELECT * FROM customers;  #CompanyName
+SELECT * FROM shippers;  # CompanyName
+SELECT * FROM orders;
+
+
+SELECT customers.CompanyName AS 'CustomerName', Shippers.CompanyName
+FROM customers INNER JOIN     # INNER JOIN only return the 'Matched results' from the table
+orders                        #Since this table contains BOTH customer's PK AND shippers PK, it's used as a 'Bridge'
+USING(CustomerID)
+INNER JOIN 
+shippers
+ON ShipperID = ShipVia
+;
+
+ SELECT * FROM employees;
+ 
+SELECT CONCAT(e.FirstName, '', e.LastName,' ', e.title) AS 'Sales reports to : ', CONCAT(m.FirstName, m.LastName, ' ', m.title) AS 'Managers'
+FROM employees AS e
+INNER JOIN
+employees AS m
+ON m.EmployeeID = e.ReportsTo
+ORDER BY Managers;
+
+SELECT * FROM products;
+ 
+SELECT p.ProductName, p.UnitPrice, c.CategoryName, c.`Description`
+FROM products AS p
+INNER JOIN
+categories AS c
+USING(categoryID)
+ORDER BY ProductName;
+
+SELECT p.ProductName, s.CompanyName AS 'Supplier Name', CONCAT(s.Address, ', ', s.City, ', ', s.PostalCode, ', ', s.Country) AS 'Supplier Address'
+FROM products AS p
+INNER JOIN
+suppliers AS s
+USING(supplierID)
+ORDER BY ProductName;
+
+SELECT * FROM orders;
+
+SELECT o.CustomerID, c.CompanyName AS 'CustomerName', COUNT(o.OrderID) AS 'Number of orders placed'
+FROM orders AS o
+INNER JOIN
+customers AS c
+USING(CustomerID)
+GROUP BY c.CompanyName          # !!! The Column that we use to 'GROUP BY' should have repetative value!, whereas the things we are sorting EG: OrderID should be unique.
+ORDER BY COUNT(o.OrderID) DESC;
+
+
+SELECT * FROM orders;
+SELECT * FROM customers;
+ 
+SELECT CustomerID, COUNT(CustomerID)       
+FROM orders
+GROUP BY CustomerID; 
+
+SELECT * FROM employeeTerritories;
+
+SELECT employees.EmployeeID, CONCAT(employees.FirstName, ' ', employees.LastName) AS 'Employee Name', COUNT(employeeTerritories.TerritoryID) AS'Number of Territories'
+FROM employees
+INNER JOIN 
+employeeTerritories
+USING(EmployeeID)
+GROUP BY employeeTerritories.EmployeeID
+ORDER BY COUNT(employeeTerritories.TerritoryID) ;
+
+SELECT o.CustomerID, c.CompanyName AS 'Customer Name', COUNT(o.orderID) AS 'Number of orders', CONCAT(e.FirstName, ' ', e.LastName) AS 'Name of the Employee'
+FROM customers AS c
+INNER JOIN orders AS o
+USING(customerID)
+INNER JOIN Employees AS e
+USING(employeeID)
+GROUP BY o.CustomerID
+ORDER BY COUNT(o.orderID);
+
+SELECT * FROM products;
+SELECT * FROM categories;
+SELECT * FROM suppliers;
+
+SELECT p.ProductName, c.CategoryName, s.CompanyName AS 'Supplier Name'
+FROM Categories AS c
+INNER JOIN
+products AS p
+USING(CategoryID)
+INNER JOIN 
+suppliers AS s
+USING(supplierID)
+;
+
+SELECT * FROM orders;
+
+SELECT orders.orderID, customers.CompanyName AS 'customerName', CONCAT('$', FORMAT((Orderdetails.UnitPrice * orderdetails.Quantity),2)) AS 'Grand Total', CONCAT(employees.FirstName, ' ', Employees.LastName) AS 'Employee Name'
+FROM employees 
+INNER JOIN orders
+USING(EmployeeID)
+INNER JOIN customers
+USING(customerID)
+INNER JOIN orderdetails
+ON orders.OrderID = orderdetails.OrderID
+; 
+
+SELECT * FROM orderdetails;
+
+# The following shows how to join FOUR tables together. Notice that the 'Bridging column' should still be placed in between, BUT no need to directly above the tables which we want to join.
+SELECT orders.orderID, customers.CompanyName AS 'customerName', CONCAT('$', FORMAT(SUM(Orderdetails.UnitPrice * orderdetails.Quantity),2)) AS 'Grand Total', CONCAT(employees.FirstName, ' ', Employees.LastName) AS 'Employee Name'
+FROM employees 
+INNER JOIN orders
+USING(EmployeeID)
+INNER JOIN customers
+USING(customerID)
+INNER JOIN orderdetails
+ON orders.OrderID = orderdetails.OrderID
+GROUP BY orderdetails.orderID
+ORDER BY orders.orderID;
+
+
+SELECT CONCAT(FirstName, ' ', LastName) AS 'Employee Name', salary
+FROM employees
+ORDER BY Salary DESC
+LIMIT 1, 2;    # This measns: I neglact the first one record and pick the next 2 record ( two records following the first one we just neglacted)
+
+
+SELECT * FROM orderdetails;
+
+SELECT OrderID, CONCAT('$', ' ', SUM(UnitPrice * Quantity)) AS 'Great Purchase'
+FROM orderdetails
+GROUP BY OrderID
+LIMIT 2, 1;
+
+SELECT salary FROM employees
+ORDER BY salary DESC
+LIMIT 3
+;
+
+SELECT orderID, Quantity,
+CASE
+WHEN Quantity < 20 THEN 'This is less than 20'
+WHEN Quantity > 20 THEN 'This is greater than 20'
+WHEN Quantity = 20 THEN 'This is equal to 20'
+ELSE 'This is not a number'
+END  
+AS `CASE`             # IF we want to create a column by using CASE, NEED TO NAME IT !
+FROM orderdetails; 
+
+SELECT * FROM EMPLOYEES
+ORDER BY
+(CASE
+	WHEN Region IS NULL THEN Country
+    ELSE Region
+END);
+
+SELECT * FROM customers
+ORDER BY(
+CASE
+	WHEN Region IS NULL THEN Country
+    ELSE Region
+END);
+
+SELECT * FROM orders;
+
+USE northwind;
+
+SELECT * FROM orders;
+SELECT * FROM customers;
+
+WITH sorce AS (SELECT customerID, count(customerID) AS numberOfOrders
+FROM orders
+GROUP BY customerID)
+SELECT customerID, numberOfOrders,
+CASE
+	WHEN numberOfOrders = 1 THEN 'This customer has done buss with us once'
+    WHEN numberOfOrders = 2 THEN 'This customer has done buss with us twice'
+    WHEN numberOfOrders = 3 THEN 'This customer has done buss with us three times'
+    ELSE 'This is one of our loyal customer'
+END AS KindOfCustomer
+FROM sorce
+ORDER BY numberOfOrders;
+
+
+WITH sorce AS (SELECT customerID, COUNT(*) AS numberOfOrders       # 'WITH' is so called CTE (common table expression)
+FROM orders
+GROUP BY customerID)
+SELECT customerID, numberOfOrders, 
+CASE
+	WHEN numberOfOrders = 1 THEN 'This is level 1 customer'
+    WHEN numberOfOrders = 2 THEN 'This is level 2 customer'
+    WHEN numberOfOrders = 3 THEN 'This is level 3 customer'
+ELSE 'This is VIP customer'
+END AS 'Type of customer'
+FROM sorce
+ORDER BY numberOfOrders;
+
+SELECT CAST('2020-07-30 10:01:01' AS TIME) AS `TIME`, CAST('2020-07-30 10:01:01' AS DATE) AS `DATE`;
+
+SELECT CAST('12:08:11' AS TIME); 
+
+SELECT OrderID, CustomerID, CAST(OrderDate AS DATE) AS OrderDate
+ FROM orders
+ ORDER BY OrderID;
+ 
+ SELECT *, CAST('2012-01-01' AS DATETIME) AS 'Date_Inspect' FROM orders;
+ 
+SELECT * FROM orderdetails;
+
+WITH CASH AS(SELECT OrderID, SUM(Quantity * UnitPrice) AS GrandTotal
+FROM orderdetails
+GROUP BY orderID
+ORDER BY SUM(Quantity * UnitPrice) DESC)
+SELECT orderID, GrandTotal,
+CASE
+	WHEN GrandTotal <= 500 THEN 'Iron customer'
+    WHEN (GrandTotal>500 AND 'GrandTotal' <=2000) THEN 'Bronze customer'  # This AND doesn't work, find other ways
+    WHEN (GrandTotal >2000 AND 'GrandTotal' < 5000) THEN 'Silver Customer'
+    WHEN (GrandTotal >5000 AND 'GrandTotal' <15000) THEN 'Gold Customer'
+    ELSE 'Plantium customer'
+END AS 'order Classification'
+FROM CASH
+ORDER BY GrandTotal DESC; 
